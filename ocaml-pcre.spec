@@ -80,8 +80,6 @@ install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre
  echo 'directory = "+pcre"'
  ) > $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/META
 
-gzip -9nf lib/*.mli README Changes
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -93,7 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc *.gz lib/*.gz
+%doc lib/*.mli README Changes
 %{_libdir}/ocaml/pcre/*.cm[ixa]*
 %{_libdir}/ocaml/pcre/*.a
 %{_examplesdir}/%{name}-%{version}
