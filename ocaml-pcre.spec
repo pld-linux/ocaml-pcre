@@ -78,6 +78,7 @@ rm -f $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}/*/Makefile
 
 mv $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
 	$RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/
+echo 'directory = "+pcre"' >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/META
 
 %clean
 rm -rf $RPM_BUILD_ROOT
