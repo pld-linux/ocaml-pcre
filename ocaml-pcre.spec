@@ -1,14 +1,14 @@
 Summary:	PCRE binding for OCaml
 Summary(pl):	Wi±zania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	5.03.3
-Release:	2
+Version:	5.09.0
+Release:	1
 License:	LGPL
 Group:		Libraries
 Vendor:		Markus Mottl <markus@oefai.at>
-URL:		http://www.ai.univie.ac.at/~markus/home/ocaml_sources.html
 Source0:	http://www.ai.univie.ac.at/~markus/ocaml_sources/pcre-ocaml-%{version}.tar.bz2
-# Source0-md5:	22769e475f6750119adc8f6314887a45
+# Source0-md5:	070e556348e050c4d3d75e8917e7e322
+URL:		http://www.ai.univie.ac.at/~markus/home/ocaml_sources.html
 BuildRequires:	pcre-devel
 BuildRequires:	ocaml-findlib
 BuildRequires:	ocaml >= 3.07
