@@ -1,15 +1,17 @@
 Summary:	PCRE binding for OCaml
 Summary(pl):	Wi±zania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	4.26.3
+Version:	5.03.1
 Release:	1
 License:	LGPL
 Group:		Libraries
 Vendor:		Markus Mottl <markus@oefai.at>
 URL:		http://www.ai.univie.ac.at/~markus/ocaml_sources/
+# Source0-md5:	34a3d7398ed8d68a158079ba0d3ccf3c
 Source0:	http://www.ai.univie.ac.at/~markus/ocaml_sources/pcre-ocaml-%{version}.tar.bz2
 BuildRequires:	pcre-devel
-BuildRequires:	ocaml >= 3.04-7
+BuildRequires:	ocaml-findlib
+BuildRequires:	ocaml >= 3.06
 %requires_eq	ocaml-runtime
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -59,26 +61,23 @@ tej biblioteki.
 
 %build
 
-%{__make} CC="%{__cc}" CFLAGS="%{rpmcflags} -fPIC -DPIC" all opt
+%{__make} CC="%{__cc}" CFLAGS="%{rpmcflags} -fPIC -DPIC" all
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/pcre,stublibs}
 
-%{__make} install OCAML_LIB_INSTALL=$RPM_BUILD_ROOT%{_libdir}/ocaml/pcre
+%{__make} install OCAMLFIND_DESTDIR=$RPM_BUILD_ROOT%{_libdir}/ocaml
 install lib/pcre.cmx $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre
 rm -f $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.mli
-(cd $RPM_BUILD_ROOT%{_libdir}/ocaml && ln -s pcre/dll*.so .)
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -r examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 # Makefiles there ain't usable
 rm -f $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}/*/Makefile
 
-install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre
-(grep -v 'linkopts = ' META
- echo 'linkopts = ""'
- echo 'directory = "+pcre"'
- ) > $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/META
+mv $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
+	$RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -86,8 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %dir %{_libdir}/ocaml/pcre
-%attr(755,root,root) %{_libdir}/ocaml/pcre/*.so
-%{_libdir}/ocaml/*.so
+%attr(755,root,root) %{_libdir}/ocaml/stublibs/*.so
 
 %files devel
 %defattr(644,root,root,755)
