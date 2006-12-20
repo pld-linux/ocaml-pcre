@@ -6,9 +6,9 @@ Version:	5.10.1
 Release:	6
 License:	LGPL
 Group:		Libraries
-Source0:	http://www.ai.univie.ac.at/~markus/ocaml_sources/pcre-ocaml-%{version}.tar.bz2
+Source0:	http://www.ocaml.info/ocaml_sources/pcre-ocaml-%{version}.tar.bz2
 # Source0-md5:	d53864f6a0436e40c3cdedcdc8352aba
-URL:		http://www.ai.univie.ac.at/~markus/home/ocaml_sources.html
+URL:		http://www.ocaml.info/home/ocaml_sources.html#toc13
 BuildRequires:	ocaml >= %{ocaml_ver}
 BuildRequires:	ocaml-findlib
 BuildRequires:	pcre-devel
