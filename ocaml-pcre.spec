@@ -2,12 +2,12 @@
 Summary:	PCRE binding for OCaml
 Summary(pl):	Wi±zania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	5.10.1
-Release:	6
+Version:	5.11.2
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.ocaml.info/ocaml_sources/pcre-ocaml-%{version}.tar.bz2
-# Source0-md5:	d53864f6a0436e40c3cdedcdc8352aba
+# Source0-md5:	ba3ad47c971ef1eb7f5b7006462f321f
 URL:		http://www.ocaml.info/home/ocaml_sources.html#toc13
 BuildRequires:	ocaml >= %{ocaml_ver}
 BuildRequires:	ocaml-findlib
@@ -60,14 +60,17 @@ tej biblioteki.
 %setup -q -n pcre-ocaml-%{version}
 
 %build
-
-%{__make} CC="%{__cc}" CFLAGS="%{rpmcflags} -fPIC -DPIC" all
+%{__make} all \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -fPIC -DPIC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/pcre,stublibs}
 
-%{__make} install OCAMLFIND_DESTDIR=$RPM_BUILD_ROOT%{_libdir}/ocaml
+%{__make} install \
+	OCAMLFIND_DESTDIR=$RPM_BUILD_ROOT%{_libdir}/ocaml
+
 install lib/pcre.cmx $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre
 rm -f $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.mli
 
@@ -85,13 +88,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc README Changes
 %dir %{_libdir}/ocaml/pcre
 %attr(755,root,root) %{_libdir}/ocaml/stublibs/*.so
 
 %files devel
 %defattr(644,root,root,755)
-%doc lib/*.mli README Changes
+%doc lib/*.mli
 %{_libdir}/ocaml/pcre/*.cm[ixa]*
 %{_libdir}/ocaml/pcre/*.a
-%{_examplesdir}/%{name}-%{version}
 %{_libdir}/ocaml/site-lib/pcre
+%{_examplesdir}/%{name}-%{version}
