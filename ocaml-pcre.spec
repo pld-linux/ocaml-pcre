@@ -1,6 +1,6 @@
 %define		ocaml_ver	1:3.09.2
 Summary:	PCRE binding for OCaml
-Summary(pl):	Wi±zania PCRE dla OCamla
+Summary(pl.UTF-8):   WiÄ…zania PCRE dla OCamla
 Name:		ocaml-pcre
 Version:	5.11.2
 Release:	1
@@ -23,18 +23,18 @@ matching regular expressions which are written in "Perl"-style.
 This package contains files needed to run bytecode executables using
 this library.
 
-%description -l pl
-Biblioteka zawarta w tym pakiecie umo¿liwia korzystanie z biblioteki
-PCRE (wyra¿enia regularne kompatybilne z Perlem), która jest z kolei
-napisana w C. Mo¿e byæ ona u¿ywana do dopasowywania wyra¿eñ
+%description -l pl.UTF-8
+Biblioteka zawarta w tym pakiecie umoÅ¼liwia korzystanie z biblioteki
+PCRE (wyraÅ¼enia regularne kompatybilne z Perlem), ktÃ³ra jest z kolei
+napisana w C. MoÅ¼e byÄ‡ ona uÅ¼ywana do dopasowywania wyraÅ¼eÅ„
 regularnych napisanym w ,,stylu Perla''.
 
-Pakiet ten zawiera binaria potrzebne do uruchamiania programów
-u¿ywaj±cych tej biblioteki.
+Pakiet ten zawiera binaria potrzebne do uruchamiania programÃ³w
+uÅ¼ywajÄ…cych tej biblioteki.
 
 %package devel
 Summary:	PCRE binding for OCaml - development part
-Summary(pl):	Wi±zania PCRE dla OCamla - cze¶æ programistyczna
+Summary(pl.UTF-8):   WiÄ…zania PCRE dla OCamla - czeÅ›Ä‡ programistyczna
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 %requires_eq	ocaml
@@ -47,13 +47,13 @@ matching regular expressions which are written in "Perl"-style.
 This package contains files needed to develop OCaml programs using
 this library.
 
-%description devel -l pl
-Biblioteka zawarta w tym pakiecie umo¿liwia korzystanie z biblioteki
-PCRE (wyra¿enia regularne kompatybilne z Perlem), która jest z kolei
-napisana w C. Mo¿e byæ ona u¿ywana do dopasowywania wyra¿eñ
+%description devel -l pl.UTF-8
+Biblioteka zawarta w tym pakiecie umoÅ¼liwia korzystanie z biblioteki
+PCRE (wyraÅ¼enia regularne kompatybilne z Perlem), ktÃ³ra jest z kolei
+napisana w C. MoÅ¼e byÄ‡ ona uÅ¼ywana do dopasowywania wyraÅ¼eÅ„
 regularnych napisanym w ,,stylu Perla''.
 
-Pakiet ten zawiera pliki niezbêdne do tworzenia programów u¿ywaj±cych
+Pakiet ten zawiera pliki niezbÄ™dne do tworzenia programÃ³w uÅ¼ywajÄ…cych
 tej biblioteki.
 
 %prep
