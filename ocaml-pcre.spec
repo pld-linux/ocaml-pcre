@@ -1,6 +1,6 @@
 %define		ocaml_ver	1:3.09.2
 Summary:	PCRE binding for OCaml
-Summary(pl.UTF-8):   Wiązania PCRE dla OCamla
+Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
 Version:	5.11.2
 Release:	1
@@ -34,7 +34,7 @@ używających tej biblioteki.
 
 %package devel
 Summary:	PCRE binding for OCaml - development part
-Summary(pl.UTF-8):   Wiązania PCRE dla OCamla - cześć programistyczna
+Summary(pl.UTF-8):	Wiązania PCRE dla OCamla - cześć programistyczna
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 %requires_eq	ocaml
