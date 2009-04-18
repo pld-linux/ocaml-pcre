@@ -2,12 +2,12 @@
 Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	5.12.2
-Release:	5
+Version:	5.16.4
+Release:	1
 License:	LGPL
 Group:		Libraries
-Source0:	http://www.ocaml.info/ocaml_sources/pcre-ocaml-%{version}.tar.bz2
-# Source0-md5:	dbe759392f1c1d22cb96b9136ebf4ec4
+Source0:	http://hg.ocaml.info/release/pcre-ocaml/archive/release-%{version}.tar.bz2
+# Source0-md5:	62b7904b95ab339a8ad7e20cfc3b1995
 URL:		http://www.ocaml.info/home/ocaml_sources.html#toc13
 BuildRequires:	ocaml >= %{ocaml_ver}
 BuildRequires:	ocaml-findlib
@@ -57,7 +57,7 @@ Pakiet ten zawiera pliki niezbędne do tworzenia programów używających
 tej biblioteki.
 
 %prep
-%setup -q -n pcre-ocaml-%{version}
+%setup -q -n pcre-ocaml-release-%{version}
 
 %build
 %{__make} all \
@@ -88,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README Changes
+%doc README.txt Changelog
 %dir %{_libdir}/ocaml/pcre
 %attr(755,root,root) %{_libdir}/ocaml/stublibs/*.so
 
