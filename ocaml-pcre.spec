@@ -60,7 +60,7 @@ tej biblioteki.
 %setup -q -n pcre-ocaml-release-%{version}
 
 %build
-%{__make} all \
+%{__make} -j1 all \
 	CC="%{__cc}" \
 	CFLAGS="%{rpmcflags} -fPIC -DPIC"
 
