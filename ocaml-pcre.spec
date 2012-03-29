@@ -3,7 +3,7 @@ Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
 Version:	6.2.2
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://hg.ocaml.info/release/pcre-ocaml/archive/release-%{version}.tar.bz2
