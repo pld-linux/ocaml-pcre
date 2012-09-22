@@ -1,16 +1,17 @@
-%define		ocaml_ver	1:3.09.2
 Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	6.2.2
-Release:	2
-License:	LGPL
+Version:	7.0.2
+Release:	1
+License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
-Source0:	http://hg.ocaml.info/release/pcre-ocaml/archive/release-%{version}.tar.bz2
-# Source0-md5:	9c89466d8bb801a6235598b04a98af26
-URL:		http://www.ocaml.info/home/ocaml_sources.html#toc15
-BuildRequires:	ocaml >= %{ocaml_ver}
-BuildRequires:	ocaml-findlib
+# see it to get commit id of particular release
+#Source0Download: https://bitbucket.org/mmottl/pcre-ocaml
+Source0:	https://bitbucket.org/mmottl/pcre-ocaml/get/00e2295ec90d.tar.bz2
+# Source0-md5:	8cdc4f56a7effd98f4e2343d996a7074
+URL:		https://bitbucket.org/mmottl/pcre-ocaml
+BuildRequires:	ocaml >= 1:3.12
+BuildRequires:	ocaml-findlib >= 1.3.1
 BuildRequires:	pcre-devel
 %requires_eq	ocaml-runtime
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -57,9 +58,14 @@ Pakiet ten zawiera pliki niezbędne do tworzenia programów używających
 tej biblioteki.
 
 %prep
-%setup -q -n pcre-ocaml-release-%{version}
+%setup -q -n mmottl-pcre-ocaml-00e2295ec90d
 
 %build
+# not autoconf configure
+./configure \
+	--prefix=%{_prefix} \
+	--docdir=$(pwd)/doc
+
 %{__make} -j1 all \
 	CC="%{__cc}" \
 	CFLAGS="%{rpmcflags} -fPIC -DPIC"
@@ -71,16 +77,13 @@ install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/pcre,stublibs}
 %{__make} install \
 	OCAMLFIND_DESTDIR=$RPM_BUILD_ROOT%{_libdir}/ocaml
 
-install lib/pcre.cmx $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre
-rm -f $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.mli
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.mli
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -r examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-# Makefiles there ain't usable
-rm -f $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}/*/Makefile
+cp -pr examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 mv $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
-	$RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/
+	$RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre
 echo 'directory = "+pcre"' >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/META
 
 %clean
@@ -88,14 +91,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.txt Changelog
+%doc AUTHORS.txt CHANGES.txt README.md
 %dir %{_libdir}/ocaml/pcre
-%attr(755,root,root) %{_libdir}/ocaml/stublibs/*.so
+%attr(755,root,root) %{_libdir}/ocaml/stublibs/dllpcre_stubs.so
+%{_libdir}/ocaml/stublibs/dllpcre_stubs.so.owner
 
 %files devel
 %defattr(644,root,root,755)
 %doc lib/*.mli
-%{_libdir}/ocaml/pcre/*.cm[ixa]*
-%{_libdir}/ocaml/pcre/*.a
+%{_libdir}/ocaml/pcre/libpcre_stubs.a
+%{_libdir}/ocaml/pcre/pcre.a
+%{_libdir}/ocaml/pcre/pcre.cm[ixa]*
 %{_libdir}/ocaml/site-lib/pcre
 %{_examplesdir}/%{name}-%{version}
