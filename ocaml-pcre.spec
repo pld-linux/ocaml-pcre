@@ -1,17 +1,15 @@
 Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	7.0.2
-Release:	4
+Version:	7.1.2
+Release:	1
 License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
-# see it to get commit id of particular release
-#Source0Download: https://bitbucket.org/mmottl/pcre-ocaml
-Source0:	https://bitbucket.org/mmottl/pcre-ocaml/get/00e2295ec90d.tar.bz2
-# Source0-md5:	8cdc4f56a7effd98f4e2343d996a7074
-URL:		https://bitbucket.org/mmottl/pcre-ocaml
+Source0:	https://github.com/mmottl/pcre-ocaml/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	b0e73c693080baf4fbd8797c8d9c8d3c
+URL:		http://mmottl.github.io/pcre-ocaml/
 BuildRequires:	ocaml >= 1:3.12
-BuildRequires:	ocaml-findlib >= 1.3.1
+BuildRequires:	ocaml-findlib >= 1.5
 BuildRequires:	pcre-devel
 %requires_eq	ocaml-runtime
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -58,7 +56,7 @@ Pakiet ten zawiera pliki niezbędne do tworzenia programów używających
 tej biblioteki.
 
 %prep
-%setup -q -n mmottl-pcre-ocaml-00e2295ec90d
+%setup -q -n pcre-ocaml-%{version}
 
 %build
 # not autoconf configure
@@ -102,5 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ocaml/pcre/libpcre_stubs.a
 %{_libdir}/ocaml/pcre/pcre.a
 %{_libdir}/ocaml/pcre/pcre.cm[ixa]*
+%{_libdir}/ocaml/pcre/pcre_compat.cm[ix]
+%{_libdir}/ocaml/pcre/pcre_compat.ml
 %{_libdir}/ocaml/site-lib/pcre
 %{_examplesdir}/%{name}-%{version}
