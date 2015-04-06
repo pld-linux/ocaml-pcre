@@ -1,8 +1,23 @@
+#
+# Conditional build:
+%bcond_without	ocaml_opt	# skip building native optimized binaries (bytecode is always built)
+
+%ifarch x32
+# not yet available on x32 (ocaml 4.02.1), remove when upstream will support it
+%undefine	with_ocaml_opt
+%endif
+
+%if %{without ocaml_opt}
+%define		no_install_post_strip	1
+# no opt means no native binary, stripping bytecode breaks such programs
+%define		_enable_debug_packages	0
+%endif
+
 Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
 Version:	7.1.2
-Release:	1
+Release:	2
 License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
 Source0:	https://github.com/mmottl/pcre-ocaml/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -98,8 +113,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc lib/*.mli
 %{_libdir}/ocaml/pcre/libpcre_stubs.a
+%if %{with ocaml_opt}
 %{_libdir}/ocaml/pcre/pcre.a
-%{_libdir}/ocaml/pcre/pcre.cm[ixa]*
+%{_libdir}/ocaml/pcre/pcre.cmxa
+%endif
+%{_libdir}/ocaml/pcre/pcre.cm[ia]
 %{_libdir}/ocaml/pcre/pcre_compat.cm[ix]
 %{_libdir}/ocaml/pcre/pcre_compat.ml
 %{_libdir}/ocaml/site-lib/pcre
