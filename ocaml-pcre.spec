@@ -11,7 +11,7 @@ Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
 Version:	7.1.5
-Release:	1
+Release:	2
 License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
 Source0:	https://github.com/mmottl/pcre-ocaml/archive/v%{version}/%{name}-%{version}.tar.gz
@@ -96,9 +96,12 @@ install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/pcre,stublibs}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -pr examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
-mv $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
+%{__mv} $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
 	$RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre
 echo 'directory = "+pcre"' >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/META
+
+# useless in rpm
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/stublibs/*.owner
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -108,14 +111,16 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS.txt CHANGES.txt README.md
 %dir %{_libdir}/ocaml/pcre
 %attr(755,root,root) %{_libdir}/ocaml/stublibs/dllpcre_stubs.so
-%{_libdir}/ocaml/stublibs/dllpcre_stubs.so.owner
+%{_libdir}/ocaml/pcre/pcre.cma
+%if %{with ocaml_opt}
+%attr(755,root,root) %{_libdir}/ocaml/pcre/pcre.cmxs
+%endif
 
 %files devel
 %defattr(644,root,root,755)
 %doc lib/*.mli
 %{_libdir}/ocaml/pcre/libpcre_stubs.a
 %{_libdir}/ocaml/pcre/pcre.annot
-%{_libdir}/ocaml/pcre/pcre.cma
 %{_libdir}/ocaml/pcre/pcre.cmi
 %{_libdir}/ocaml/pcre/pcre.cmt
 %{_libdir}/ocaml/pcre/pcre.cmti
@@ -123,7 +128,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ocaml/pcre/pcre.a
 %{_libdir}/ocaml/pcre/pcre.cmx
 %{_libdir}/ocaml/pcre/pcre.cmxa
-%{_libdir}/ocaml/pcre/pcre.cmxs
 %{_libdir}/ocaml/pcre/pcre_compat.cmx
 %endif
 %{_libdir}/ocaml/site-lib/pcre
