@@ -3,19 +3,20 @@
 %bcond_without	ocaml_opt	# skip building native optimized binaries (bytecode is always built)
 
 # not yet available on x32 (ocaml 4.02.1), update when upstream will support it
-%ifnarch %{ix86} %{x8664} arm aarch64 ppc sparc sparcv9 
+%ifnarch %{ix86} %{x8664} %{arm} aarch64 ppc sparc sparcv9
 %undefine	with_ocaml_opt
 %endif
 
 Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	7.1.5
-Release:	4
+Version:	7.2.3
+Release:	1
 License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
-Source0:	https://github.com/mmottl/pcre-ocaml/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	28e40ad63fe2d568aa47ff460d3f9d3a
+#Source0Download: https://github.com/mmottl/pcre-ocaml/releases
+Source0:	https://github.com/mmottl/pcre-ocaml/releases/download/v%{version}/pcre-ocaml-%{version}.tar.gz
+# Source0-md5:	90b503355160d7422a7c3ef1623e6444
 URL:		http://mmottl.github.io/pcre-ocaml/
 BuildRequires:	ocaml >= 1:3.12
 BuildRequires:	ocaml-findlib >= 1.5
@@ -101,7 +102,9 @@ cp -pr examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 echo 'directory = "+pcre"' >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/META
 
 # useless in rpm
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/stublibs/*.owner
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/stublibs/*.so.owner
+# for debugging(?)
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.{annot,cmt,cmti}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -120,10 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc lib/*.mli
 %{_libdir}/ocaml/pcre/libpcre_stubs.a
-%{_libdir}/ocaml/pcre/pcre.annot
 %{_libdir}/ocaml/pcre/pcre.cmi
-%{_libdir}/ocaml/pcre/pcre.cmt
-%{_libdir}/ocaml/pcre/pcre.cmti
 %if %{with ocaml_opt}
 %{_libdir}/ocaml/pcre/pcre.a
 %{_libdir}/ocaml/pcre/pcre.cmx
