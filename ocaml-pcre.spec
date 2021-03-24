@@ -10,13 +10,12 @@
 Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	7.2.3
+Version:	7.4.6
 Release:	1
 License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
-#Source0Download: https://github.com/mmottl/pcre-ocaml/releases
-Source0:	https://github.com/mmottl/pcre-ocaml/releases/download/v%{version}/pcre-ocaml-%{version}.tar.gz
-# Source0-md5:	90b503355160d7422a7c3ef1623e6444
+Source0:	https://github.com/mmottl/pcre-ocaml/archive/%{version}/pcre-ocaml-%{version}.tar.gz
+# Source0-md5:	da29a597a1a6f4744b191260651fe3a6
 URL:		http://mmottl.github.io/pcre-ocaml/
 BuildRequires:	ocaml >= 1:3.12
 BuildRequires:	ocaml-findlib >= 1.5
@@ -52,7 +51,7 @@ Summary:	PCRE binding for OCaml - development part
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla - cześć programistyczna
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%requires_eq	ocaml
+%requires_eq ocaml
 
 %description devel
 This OCaml-library interfaces the PCRE (Perl-compatibility regular
@@ -75,21 +74,13 @@ tej biblioteki.
 %setup -q -n pcre-ocaml-%{version}
 
 %build
-# not autoconf configure
-./configure \
-	--prefix=%{_prefix} \
-	--docdir=$(pwd)/doc
-
-%{__make} -j1 all \
-	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags} -fPIC -DPIC"
+dune build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/pcre,stublibs}
 
-%{__make} install \
-	OCAMLFIND_DESTDIR=$RPM_BUILD_ROOT%{_libdir}/ocaml
+dune install --destdir=$RPM_BUILD_ROOT
 
 # packaged as %doc
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.mli
@@ -97,23 +88,21 @@ install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/pcre,stublibs}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -pr examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
-%{__mv} $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
+echo 'directory = "+pcre"' >> $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META
+ln -sr $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
 	$RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre
-echo 'directory = "+pcre"' >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre/META
-
-# useless in rpm
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/stublibs/*.so.owner
-# for debugging(?)
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.{annot,cmt,cmti}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS.txt CHANGES.txt README.md
+%doc CHANGES.md README.md
 %dir %{_libdir}/ocaml/pcre
 %attr(755,root,root) %{_libdir}/ocaml/stublibs/dllpcre_stubs.so
+%{_libdir}/ocaml/pcre/META
+%{_libdir}/ocaml/pcre/dune-package
+%{_libdir}/ocaml/pcre/opam
 %{_libdir}/ocaml/pcre/pcre.cma
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_libdir}/ocaml/pcre/pcre.cmxs
@@ -121,14 +110,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc lib/*.mli
 %{_libdir}/ocaml/pcre/libpcre_stubs.a
 %{_libdir}/ocaml/pcre/pcre.cmi
+%{_libdir}/ocaml/pcre/pcre.cmt
+%{_libdir}/ocaml/pcre/pcre.cmti
 %if %{with ocaml_opt}
 %{_libdir}/ocaml/pcre/pcre.a
 %{_libdir}/ocaml/pcre/pcre.cmx
 %{_libdir}/ocaml/pcre/pcre.cmxa
-%{_libdir}/ocaml/pcre/pcre_compat.cmx
 %endif
 %{_libdir}/ocaml/site-lib/pcre
 %{_examplesdir}/%{name}-%{version}
