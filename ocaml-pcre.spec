@@ -11,7 +11,7 @@ Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
 Version:	7.4.6
-Release:	1
+Release:	2
 License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
 Source0:	https://github.com/mmottl/pcre-ocaml/archive/%{version}/pcre-ocaml-%{version}.tar.gz
@@ -78,7 +78,7 @@ dune build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/pcre,stublibs}
+install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/stublibs
 
 dune install --destdir=$RPM_BUILD_ROOT
 
@@ -87,10 +87,6 @@ dune install --destdir=$RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -pr examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-
-echo 'directory = "+pcre"' >> $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META
-ln -sr $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/META \
-	$RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/pcre
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -119,5 +115,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ocaml/pcre/pcre.cmx
 %{_libdir}/ocaml/pcre/pcre.cmxa
 %endif
-%{_libdir}/ocaml/site-lib/pcre
 %{_examplesdir}/%{name}-%{version}
