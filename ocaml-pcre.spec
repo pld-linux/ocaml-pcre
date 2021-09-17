@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	ocaml_opt	# skip building native optimized binaries (bytecode is always built)
+%bcond_without	ocaml_opt	# native optimized binaries (bytecode is always built)
 
 # not yet available on x32 (ocaml 4.02.1), update when upstream will support it
 %ifnarch %{ix86} %{x8664} %{arm} aarch64 ppc sparc sparcv9
@@ -10,14 +10,16 @@
 Summary:	PCRE binding for OCaml
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla
 Name:		ocaml-pcre
-Version:	7.4.6
-Release:	2
+Version:	7.5.0
+Release:	1
 License:	LGPL v2.1+ with OCaml linking exception
 Group:		Libraries
-Source0:	https://github.com/mmottl/pcre-ocaml/archive/%{version}/pcre-ocaml-%{version}.tar.gz
-# Source0-md5:	da29a597a1a6f4744b191260651fe3a6
+#Source0Download: https://github.com/mmottl/pcre-ocaml/releases
+Source0:	https://github.com/mmottl/pcre-ocaml/releases/download/%{version}/pcre-%{version}.tbz
+# Source0-md5:	3f91ab553a59b661e5e7debbb876918c
 URL:		http://mmottl.github.io/pcre-ocaml/
-BuildRequires:	ocaml >= 1:3.12
+BuildRequires:	ocaml >= 1:4.12
+BuildRequires:	ocaml-dune >= 2.7
 BuildRequires:	ocaml-findlib >= 1.5
 BuildRequires:	pcre-devel
 %requires_eq	ocaml-runtime
@@ -51,7 +53,7 @@ Summary:	PCRE binding for OCaml - development part
 Summary(pl.UTF-8):	Wiązania PCRE dla OCamla - cześć programistyczna
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%requires_eq ocaml
+%requires_eq	ocaml
 
 %description devel
 This OCaml-library interfaces the PCRE (Perl-compatibility regular
@@ -71,10 +73,10 @@ Pakiet ten zawiera pliki niezbędne do tworzenia programów używających
 tej biblioteki.
 
 %prep
-%setup -q -n pcre-ocaml-%{version}
+%setup -q -n pcre-%{version}
 
 %build
-dune build
+dune build --display=verbose
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -88,17 +90,20 @@ dune install --destdir=$RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -pr examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
+# sources
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/pcre/*.ml
+# packaged as %doc
+%{__rm} -r $RPM_BUILD_ROOT%{_prefix}/doc/pcre
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.md README.md
+%doc CHANGES.md LICENSE.md README.md
 %dir %{_libdir}/ocaml/pcre
 %attr(755,root,root) %{_libdir}/ocaml/stublibs/dllpcre_stubs.so
 %{_libdir}/ocaml/pcre/META
-%{_libdir}/ocaml/pcre/dune-package
-%{_libdir}/ocaml/pcre/opam
 %{_libdir}/ocaml/pcre/pcre.cma
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_libdir}/ocaml/pcre/pcre.cmxs
@@ -106,6 +111,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%{_libdir}/ocaml/pcre/dune-package
+%{_libdir}/ocaml/pcre/opam
 %{_libdir}/ocaml/pcre/libpcre_stubs.a
 %{_libdir}/ocaml/pcre/pcre.cmi
 %{_libdir}/ocaml/pcre/pcre.cmt
