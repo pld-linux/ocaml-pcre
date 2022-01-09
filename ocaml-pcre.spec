@@ -50,7 +50,7 @@ używających tej biblioteki.
 
 %package devel
 Summary:	PCRE binding for OCaml - development part
-Summary(pl.UTF-8):	Wiązania PCRE dla OCamla - cześć programistyczna
+Summary(pl.UTF-8):	Wiązania PCRE dla OCamla - część programistyczna
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 %requires_eq	ocaml
